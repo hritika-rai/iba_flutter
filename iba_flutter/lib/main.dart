@@ -23,7 +23,9 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
+
       ),
+
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -61,6 +63,30 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _decrementCounter() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      if (_counter > 0) {
+        _counter--;
+      }
+    });
+  }
+
+  void _reset() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter=0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -93,7 +119,10 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
+
+          
           mainAxisAlignment: MainAxisAlignment.center,
+          // use padding or mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             const Text(
               'You have pushed the button this many times:',
@@ -104,12 +133,37 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+        
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+            child: FloatingActionButton(
+              onPressed: _decrementCounter,
+              tooltip: 'Decrement',
+              child: const Icon(Icons.remove)
+            )
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(38, 0, 70, 0),
+            child: FloatingActionButton(
+              onPressed: _reset,
+              tooltip: 'Reset',
+              child: const Icon(Icons.circle)
+            )
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+            child: FloatingActionButton(
+              onPressed: _incrementCounter,
+              tooltip: 'Increment',
+              child: const Icon(Icons.add)
+            )
+          ),
+        ],
+        
+      ), // This trailing comma makes auto-formatting nicer for build methods.      
     );
   }
 }
