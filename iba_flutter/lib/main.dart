@@ -1,115 +1,133 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const AppBarApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class AppBarApp extends StatelessWidget {
+  const AppBarApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+     return MaterialApp(
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 84, 103, 103)),
+        useMaterial3: false,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: AppBarExample(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class AppBarExample extends StatefulWidget {
+  const AppBarExample({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _AppBarExampleState createState() => _AppBarExampleState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _AppBarExampleState extends State<AppBarExample> {
+  bool _isPasswordVisible = false;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Widget _getLogoImage() {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: SizedBox(
+        height: 200,
+        width: 200,
+        child: Image.network(
+            'https://img.icons8.com/?size=96&id=7I3BjCqe9rjG&format=png'),
+      ),
+    );
+  }
+
+  Widget _getEmailTextField() {
+    return const Padding(
+      padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
+      child: TextField(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Email',
+          hintText: 'Enter Email',
+        ),
+      ),
+    );
+  }
+
+  Widget _getPasswordTextField() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+      child: TextField(
+        obscureText: !_isPasswordVisible,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Password',
+          hintText: 'Enter secure password',
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+            ),
+            onPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _getNewUserText() {
+    return const Padding(
+      padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+      child: Text(
+        'New User? Create Account',
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  Widget _getForgetPasswordButton() {
+    return TextButton(
+      onPressed: () {},
+      child: const Text(
+        'Forget Password',
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text('Login'),
+        centerTitle: true,
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: SingleChildScrollView(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            _getLogoImage(),
+            _getEmailTextField(),
+            _getPasswordTextField(),
+            _getNewUserText(),
+            _getForgetPasswordButton(),
+            SizedBox(height: MediaQuery.of(context).viewInsets.bottom), // Add this to handle keyboard overlay
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: FloatingActionButton.extended(
+            onPressed: () {},
+            label: const Text('Login'),
+            backgroundColor: const Color.fromARGB(255, 84, 103, 103),
+          ),
+        ),
+      ),
     );
   }
+
 }
